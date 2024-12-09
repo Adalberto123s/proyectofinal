@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Mi E-commerce</title>
+
+        <!-- Estilos personalizados -->
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="css/styles.css">
+    </head>
+<body>
+    <header class="py-4 flex bg-dark" id="main-header">
+
+    </header>
+     <!-- Contenido Principal -->
+     <div class="w-full flex-grow overflow-y-auto py-2" style="height: 0">
+        <h2 class="text-center">Bienvenido a nuestro E-commerce</h2>
+        <p class="text-center">Aquí encontrarás los mejores productos a precios increíbles.</p>
+
+        <!-- Galería de Productos -->
+        <div class="flex justify-content-center gap-4 flex-row flex-wrap ">
+            <div id="product-container" class="row">
+                <!-- Los productos se generarán dinámicamente aquí -->
+            </div>
+
+            <!-- Más productos... -->
+        </div>
+    </div>
+    <footer class="bg-dark text-white py-4" style="height: 100px">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <p>&copy; 2024 Mi E-commerce. Todos los derechos reservados.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="js/script.js"></script>
+    <script>
+        loadHeader()
+        const productContainer = document.getElementById('product-container');
+        products.forEach(product => {
+            const productCard = `
+            <div class="col-md-3 mb-4">
+                <div class="card">
+                    <img src="${product.imageUrl}" class="card-img-top" alt="${product.name}">
+                    <div class="card-body">
+                        <h5 class="card-title">${product.name}</h5>
+                        <p class="card-text">Precio: $${product.price.toFixed(2)}</p>
+                        <p class="card-text">Cantidad disponible: ${product.quantity}</p>
+                        <a href="product-details.html?id=${product.id}" class="btn btn-primary">Ver más</a>
+                        <button  class="btn bg-dark text-white" onclick="addToCart('${product.id}', '${product.name}', '${product.imageUrl}','${product.price}')">Añadir</button>
+                    </div>
+                </div>
+            </div>
+        `;
+            productContainer.innerHTML += productCard;
+        });
+    </script>
+</body>
+</html>

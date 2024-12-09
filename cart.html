@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrito de Compras</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<header class="py-4 flex bg-dark" id="main-header">
+
+</header>
+    <!-- Carrito de Compras -->
+    <div class="container flex-grow h-0 overflow-auto">
+        <h2 class="text-center mb-4">Carrito de Compras</h2>
+
+        <div id="cart-items" class="row">
+            <!-- Los productos se cargarán dinámicamente aquí -->
+        </div>
+
+        <!-- Total y Botón de Compra -->
+        <div class="text-center mt-4">
+            <h4>Total: $<span id="total-price">0</span></h4>
+            <button class="btn btn-success mt-3" onclick="proceedToCheckout()">Proceder a la Compra</button>
+        </div>
+    </div>
+
+    <!-- Pie de Página -->
+    <footer class="bg-dark text-white py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 ">
+                    <p>&copy; 2024 Mi E-commerce. Todos los derechos reservados.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+            loadHeader()
+        // Función para cargar los productos del carrito
+        function loadCartItems() {
+            let cart = JSON.parse(localStorage.getItem('cart')) || {};
+            let cartItemsContainer = document.getElementById('cart-items');
+            let totalPrice = 0;
+            cartItemsContainer.innerHTML = ""; // Limpiar contenido previo
+
+            // Iterar sobre los productos en el carrito y mostrarlos
+            for (let productId in cart) {
+                let product = cart[productId];
+                totalPrice += product.price * product.quantity;
+
+                let productRow = `
+                    <div class="col-md-12 mb-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <h5 class="card-title">${product.name}</h5>
+                                        <p>Precio: $${product.price}</p>
+                                    </div>
+                                    <div>
+                                        <p>Cantidad: <input type="number" min="1" value="${product.quantity}" onchange="updateQuantity(${product.id}, this.value)" class="form-control d-inline-block" style="width: 80px;"></p>
+                                        <button class="btn btn-danger" onclick="removeFromCart(${product.id})">Eliminar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                cartItemsContainer.innerHTML += productRow;
+            }
+
+            // Mostrar el total del carrito
+            document.getElementById('total-price').textContent = totalPrice.toFixed(2);
+
+            // Actualizar el contador en el encabezado
+            updateCartCount();
+        }
+
+        // Función para actualizar la cantidad de un producto
+        function updateQuantity(productId, quantity) {
+            let cart = JSON.parse(localStorage.getItem('cart')) || {};
+            if (cart[productId]) {
+                cart[productId].quantity = parseInt(quantity);
+                localStorage.setItem('cart', JSON.stringify(cart));
+                loadCartItems();
+            }
+        }
+
+        // Función para eliminar un producto del carrito
+        function removeFromCart(productId) {
+            let cart = JSON.parse(localStorage.getItem('cart')) || {};
+            if (cart[productId]) {
+                delete cart[productId];
+                localStorage.setItem('cart', JSON.stringify(cart));
+                loadCartItems();
+            }
+        }
+
+        // Función para proceder a la compra
+        function proceedToCheckout() {
+            // Redirigir a la página de pago o confirmar la compra
+            alert("¡Procediendo a la compra!");
+            // Aquí puedes redirigir a una página de checkout
+            // window.location.href = 'checkout.html';
+        }
+
+        // Función para actualizar el contador del carrito en el encabezado
+        function updateCartCount() {
+            let cart = JSON.parse(localStorage.getItem('cart')) || {};
+            let totalItems = Object.values(cart).reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('cart-count').textContent = totalItems;
+        }
+
+        // Llamada inicial para cargar los productos y actualizar el contador al cargar la página
+        loadCartItems();
+    </script>
+</body>
+</html>

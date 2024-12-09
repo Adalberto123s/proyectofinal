@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle del Producto</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- Encabezado -->
+    <header class="py-4 flex bg-dark" id="main-header">
+
+    </header>
+
+    <!-- Detalle del Producto -->
+    <div class="container mt-5 h-0 overflow-y-auto flex-grow">
+        <h2 class="text-center" id="productName">Cargando...</h2>
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <img id="productImage" src="" alt="Producto" class="img-fluid">
+            </div>
+            <div class="col-md-6">
+                <h4 id="productPrice">Precio: $0.00</h4>
+                <p id="productQuantity">Cantidad: 0</p>
+                <button onclick="addToCart(product.id, product.name, product.imageUrl, product.price)" class="btn btn-primary" id="addToCartBtn">Añadir al carrito</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pie de Página -->
+    <footer class="bg-dark text-white py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <p>&copy; 2024 Mi E-commerce. Todos los derechos reservados.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="js/script.js"></script>
+
+    <script>
+        loadHeader()
+        // Obtener el ID del producto desde la URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const productId = parseInt(urlParams.get('id'));  // Ejemplo de URL: product-detail.html?id=1
+
+        // Buscar el producto en el "backend"
+        const product = products.find(p => p.id === productId);
+
+        // Mostrar los detalles del producto
+        if (product) {
+            document.getElementById("productName").textContent = product.name;
+            document.getElementById("productPrice").textContent = `Precio: $${product.price.toFixed(2)}`;
+            document.getElementById("productQuantity").textContent = `Cantidad disponible: ${product.quantity}`;
+            document.getElementById("productImage").src = product.imageUrl;
+
+        } else {
+            document.getElementById("productName").textContent = "Producto no encontrado";
+            document.getElementById("productPrice").textContent = "";
+            document.getElementById("productQuantity").textContent = "";
+        }
+    </script>
+    <script src="js/script.js"></script>
+</body>
+</html>
